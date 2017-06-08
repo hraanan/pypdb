@@ -115,8 +115,8 @@ def make_query(search_term, querytype='AdvancedKeywordQuery'):
     assert querytype in {'HoldingsQuery', 'ExpTypeQuery',
                          'AdvancedKeywordQuery','StructureIdQuery',
                          'ModifiedStructuresQuery', 'AdvancedAuthorQuery', 'MotifQuery',
-                         'NoLigandQuery'
-                        }
+                         'NoLigandQuery', 'PubmedIdQuery'
+                        }, 'Query type %s not supported yet' % querytype
 
     query_params = dict()
     query_params['queryType'] = querytype
@@ -125,8 +125,8 @@ def make_query(search_term, querytype='AdvancedKeywordQuery'):
         query_params['description'] = 'Text Search for: '+ search_term
         query_params['keywords'] = search_term
 
-#    elif querytype=='NoLigandQuery':
-#        query_params['haveLigands'] = 'yes'
+    elif querytype=='NoLigandQuery':
+        query_params['haveLigands'] = 'yes'
 
     elif querytype=='AdvancedAuthorQuery':
         query_params['description'] = 'Author Name: '+ search_term
@@ -142,19 +142,16 @@ def make_query(search_term, querytype='AdvancedKeywordQuery'):
     elif querytype in ['StructureIdQuery','ModifiedStructuresQuery']:
         query_params['structureIdList'] = search_term
 
-
     elif querytype=='ExpTypeQuery':
         query_params['experimentalMethod'] = search_term
         query_params['description'] = 'Experimental Method Search : Experimental Method='+ search_term
         query_params['mvStructure.expMethod.value']= search_term
-# Search by Ligans
-#    elif querytype=='NoLigandQuery':
-#        query_params['description'] = 'Ligand Polymeric type is Any: '+ search_term
-#        #query_params['searchType'] = 'All Authors'
-#        print('xxx')        
-#        query_params['ChemCompIdQuery'] = search_term
-#        query_params['polymericType'] = 'Free'
-        
+
+    elif querytype=='PubmedIdQuery':
+        query_params['description'] = 'Pubmed Id Search for Pubmed Id '+ search_term
+        query_params['pubMedIdList'] = search_term
+
+
     scan_params = dict()
     scan_params['orgPdbQuery'] = query_params
 
